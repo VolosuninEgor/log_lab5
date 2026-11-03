@@ -20,18 +20,14 @@ std::vector<std::vector<bool>> gen_matrix_s(std::mt19937& gen){
     int size = distrib(gen);
     std::vector<std::vector<bool>> matrix(size, std::vector<bool>(size, false));
 
-    for (size_t i = 0; i < size; ++i){
-        for (size_t j = 0; j < size; ++j){
-            int a = distrib(gen);
-            if (i != 0 && j < i) {
-                if (matrix[j][i] == true) matrix[i][j] = true;
-                else matrix[i][j] = false;
-            } else {
-                if (i == j) matrix[i][j] = false;
-                else matrix[i][j] = static_cast<bool>(a%2);
-            }
+    std::uniform_int_distribution<int> distrib_b(0, 1); 
+    for (size_t i = 0; i < matrix.size()-1; ++i){
+        for (size_t j = i+1; j < matrix.size(); ++j){
+            matrix[i][j] = distrib_b(gen);
+            matrix[j][i] = matrix[i][j];
         }
     }
+
     return matrix;
 }
 
